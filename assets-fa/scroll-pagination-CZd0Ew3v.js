@@ -1,0 +1,1 @@
+function e(e){return t=>{if(!e?.hasMore||e.isLoadingMore)return;let n=t.currentTarget;n.scrollHeight-n.scrollTop-n.clientHeight<48&&e.onLoadMore()}}export{e as t};

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <link id="app-favicon" rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paca</title>
+    <script>(()=> {try{const stored=window.localStorage.getItem('theme');const mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;const resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;const root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(_e){}})();</script>
+    <!-- Keep this list in sync with SUPPORTED_LANGUAGES in src/i18n/config.ts. Sets `lang` before first paint so locale-specific font rules (e.g. Vietnamese) apply immediately, avoiding a flash of the wrong font. -->
+    <script>(()=> {try{const supported=['en','vi','ko','zh-CN','ja','es','fr','pt-BR','fa'];const stored=window.localStorage.getItem('locale');let locale=supported.includes(stored)?stored:null;if(!locale){const nav=navigator.language||'';const base=nav.split('-')[0];locale=supported.includes(nav)?nav:(supported.includes(base)?base:null);}const l=locale||'fa';document.documentElement.lang=l;document.documentElement.dir=(l==='fa')?'rtl':'ltr';}catch(_e){}})();</script>
+    <script type="module" src="/__local/boot.js" data-paca-app="/assets-fa/mf-entry-bootstrap-0-481a160d.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets-fa/useRouter-3wXbhf48.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/shim-B8JJQLXI.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/with-selector-2vfDJwHZ.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/link-zO80o_Ii.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/not-found-i5RsCZif.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/matchContext-CLMpwOLX.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/useParams-Dw-QtSzI.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/admin-BFFHfarR.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/appShell-CWWMH8qg.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/auth-Cn2R7ht_.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/common-ez_PIZWb.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/errors-Dw4-gLjG.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/plugins-DCppM09o.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/profile-Cm8Xzimj.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/projects-B_1bB9IV.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/roles-BpT4Twvd.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/shared-BQYGdWmb.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/shortcuts-BlfLrYpJ.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/api-client-Ca8xi7QN.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/storage-sync-BIWcua49.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/i18n-CwIZwLYI.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/modern-DSwVpP-Q.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/floating-ui.utils.dom-B_-bZDGP.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/utils-CC7aw0DH.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/button-DWJX8t0S.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/createBaseUIEventDetails-L4A-1MPO.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/floating-ui.utils-DrtUanoU.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/inertValue-C7h-fxOP.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/FloatingPortal-BAG5odNF.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/lucide-react-xfXdc0vY.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/feedback-COtR5gKp.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/settings-api-qw4QkBu3.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/esm-CopUkWJ2.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/project-api-nm8QrHQm.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/id-directory-BOo3YV_2.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/member-directory-C41fnI7n.js">
+    <link rel="modulepreload" crossorigin href="/assets-fa/actions-4h7ngdik.js">
+    <link rel="stylesheet" crossorigin href="/assets-fa/index-kk9iDJZW.css">
+  <link rel="modulepreload" crossorigin href="/assets-fa/hostInit-s5erIyue.js"><link rel="modulepreload" crossorigin href="/assets-fa/index-CxHcvCaY.js"><link rel="modulepreload" crossorigin href="/assets-fa/remoteEntry-BYlb_T-W.js"><link rel="modulepreload" crossorigin href="/assets-fa/_virtual_mf-localSharedImportMap___mfe_internal__host-B08ed9F2.js"><link rel="modulepreload" crossorigin href="/assets-fa/_virtual_mf___mfe_internal__host__loadShare__react__loadShare__.js-BUi8BtjT.js"><link rel="modulepreload" crossorigin href="/assets-fa/_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js"><link rel="modulepreload" crossorigin href="/assets-fa/_virtual_mf___mfe_internal__host__loadShare__react_mf_2_dom__loadShare__.js-NT6pkCLo.js"><link rel="modulepreload" crossorigin href="/assets-fa/_virtual_mf___mfe_internal__host__loadShare__react_mf_2_dom_mf_1_client__loadShare__.js-BmJfm0Ph.js"><script>try{if(!localStorage.getItem('paca-locale-init')){localStorage.setItem('locale','fa');localStorage.setItem('paca-locale-init','1');}}catch(e){}</script>
+<script>(function(){var d=document.documentElement;function f(l){return((l===undefined||l===null||l==='')&&d.lang==='fa')?'fa-IR':l}var a=Date.prototype.toLocaleDateString;Date.prototype.toLocaleDateString=function(l,o){return a.call(this,f(l),o)};var b=Date.prototype.toLocaleString;Date.prototype.toLocaleString=function(l,o){return b.call(this,f(l),o)}})();</script>
+<script defer src="/branding/jalali-calendar.js"></script>
+<link rel="stylesheet" href="/branding/theme.css">
+<link rel="stylesheet" href="/assets-fa/rtl-6b99012d.css">
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

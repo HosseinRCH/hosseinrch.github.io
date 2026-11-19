@@ -1,0 +1,1 @@
+import{n as e}from"./_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js";import{n as t}from"./utils-CC7aw0DH.js";function n({className:n,...r}){return e(`div`,{"data-slot":`skeleton`,className:t(`animate-pulse rounded-md bg-muted`,n),...r})}export{n as t};

@@ -1,0 +1,1 @@
+function e(e,t){let n=Date.now()-new Date(e).getTime(),r=Math.floor(n/6e4);if(r<1)return t(`timeAgo.justNow`);if(r<60)return t(`timeAgo.minutes`,{count:r});let i=Math.floor(r/60);return i<24?t(`timeAgo.hours`,{count:i}):t(`timeAgo.days`,{count:Math.floor(i/24)})}export{e as t};

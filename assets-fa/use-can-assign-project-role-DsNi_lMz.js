@@ -1,0 +1,1 @@
+import{t as e}from"./use-project-permissions-kWRTiVqM.js";import{t}from"./use-permissions-B0-yNOgd.js";function n(n){let{hasPermission:r,isLoading:i}=t(),{hasProjectPermission:a,isLoading:o}=e(n);return{canAssignRoles:r(`roles:assign`)||a(`roles:assign`),isLoading:i||o}}export{n as t};

@@ -1,0 +1,1 @@
+export{t as get,n as init}from"./virtual_mf-REMOTE_ENTRY_ID___mfe_internal__host__remoteEntry-_hash_-0_Vw_7PK.js";

@@ -1,0 +1,1 @@
+import{n as e}from"./_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js";import{t}from"./new-conversation-thread-DJe20Q8t.js";var n=()=>e(t,{});export{n as component};

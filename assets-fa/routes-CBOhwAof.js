@@ -1,0 +1,1 @@
+import{n as e}from"./_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js";import{n as t,r as n}from"./login-D3-ryti5.js";import{Pi as r}from"./index-CxHcvCaY.js";function i(){let{sso_error:i,redirect:a,admin:o}=r.useSearch();return e(t,{children:e(n,{ssoError:i,redirectTo:a,adminSignIn:o})})}export{i as component};

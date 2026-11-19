@@ -1,0 +1,1 @@
+import{T as e,_ as t,j as n}from"./_virtual_mf___mfe_internal__host__loadShare__react__loadShare__.js-BUi8BtjT.js";n();var r=768;function i(){let[n,i]=e(void 0);return t(()=>{let e=window.matchMedia(`(max-width: 767px)`),t=()=>{i(window.innerWidth<r)};return e.addEventListener(`change`,t),i(window.innerWidth<r),()=>e.removeEventListener(`change`,t)},[]),!!n}export{i as t};

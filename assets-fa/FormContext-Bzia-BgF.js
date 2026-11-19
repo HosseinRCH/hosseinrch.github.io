@@ -1,0 +1,1 @@
+import{h as e,i as t,j as n}from"./_virtual_mf___mfe_internal__host__loadShare__react__loadShare__.js-BUi8BtjT.js";import{f as r}from"./button-DWJX8t0S.js";n();var i=t({formRef:{current:{fields:new Map}},errors:{},clearErrors:r,validationMode:`onSubmit`,submitAttemptedRef:{current:!1}});function a(){return e(i)}export{a as t};

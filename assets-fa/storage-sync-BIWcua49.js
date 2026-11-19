@@ -1,0 +1,1 @@
+function e(e,t){let n=n=>{n.key===e&&t(n)};return window.addEventListener(`storage`,n),()=>window.removeEventListener(`storage`,n)}export{e as t};

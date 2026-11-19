@@ -1,0 +1,1 @@
+import{o as e}from"./modern-DSwVpP-Q.js";import{v as t}from"./project-api-nm8QrHQm.js";import{i as n,l as r,r as i}from"./actions-4h7ngdik.js";var a=[];function o(o){let{data:s=a,isLoading:c}=e(o===void 0?r:{...t(o),enabled:!!o});return{actions:s,has:e=>i(s,e),hasAny:e=>n(s,e),isLoading:c}}export{o as t};

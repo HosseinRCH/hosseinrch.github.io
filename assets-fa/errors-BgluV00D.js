@@ -1,0 +1,1 @@
+var e=`プラグイン`,t=`の読み込みに失敗しました`,n=`このページを表示する権限がありません`,r=`{{pluginName}}へのアクセス権限をプロジェクトのオーナーまたは管理者に依頼してください。`,i={pluginLoadFailedPrefix:e,pluginLoadFailedSuffix:t,pluginNoPermissionTitle:n,pluginNoPermissionDescription:r};export{i as default,e as pluginLoadFailedPrefix,t as pluginLoadFailedSuffix,r as pluginNoPermissionDescription,n as pluginNoPermissionTitle};

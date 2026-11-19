@@ -1,0 +1,1 @@
+import{t as e}from"./use-effective-actions-ji7sXaHL.js";function t(t){let n=e(),r=e(t??``);return e=>!e.requiredPermission||(t?r.has(e.requiredPermission):n.has(e.requiredPermission))}export{t};

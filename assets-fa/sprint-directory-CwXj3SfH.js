@@ -1,0 +1,1 @@
+import{n as e,t}from"./id-directory-BOo3YV_2.js";import{kn as n}from"./index-CxHcvCaY.js";var r=class extends t{constructor(e){super(async t=>(await n(e,{ids:t,pageSize:100})).items,e=>[e.id])}},i=new Map;function a(e){let t=i.get(e);return t||(t=new r(e),i.set(e,t)),t}function o(e){i.get(e)?.invalidate()}function s(t){return e(a(t||``))}export{o as n,s as r,a as t};

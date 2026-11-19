@@ -1,0 +1,1 @@
+import{t as e}from"./react-CuUHEn32.js";var t=e((e,t)=>({active:null,setActive:t=>e({active:t}),clearActive:(n,r)=>{let i=t().active;i?.type===n&&i.id===r&&e({active:null})}}));export{t};

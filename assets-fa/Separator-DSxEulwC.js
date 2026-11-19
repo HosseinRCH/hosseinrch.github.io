@@ -1,0 +1,1 @@
+import{j as e,s as t}from"./_virtual_mf___mfe_internal__host__loadShare__react__loadShare__.js-BUi8BtjT.js";import{s as n}from"./button-DWJX8t0S.js";e();var r=t(function(e,t){let{className:r,render:i,orientation:a=`horizontal`,style:o,...s}=e;return n(`div`,e,{state:{orientation:a},ref:t,props:[{role:`separator`,"aria-orientation":a},s]})});export{r as t};

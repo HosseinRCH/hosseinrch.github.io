@@ -1,0 +1,1 @@
+var e=`插件`,t=`加载失败`,n=`您没有权限查看此页面`,r=`请项目所有者或管理员为您授予访问 {{pluginName}} 的权限。`,i={pluginLoadFailedPrefix:e,pluginLoadFailedSuffix:t,pluginNoPermissionTitle:n,pluginNoPermissionDescription:r};export{i as default,e as pluginLoadFailedPrefix,t as pluginLoadFailedSuffix,r as pluginNoPermissionDescription,n as pluginNoPermissionTitle};

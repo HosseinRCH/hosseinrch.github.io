@@ -1,0 +1,1 @@
+import{h as e,i as t,j as n}from"./_virtual_mf___mfe_internal__host__loadShare__react__loadShare__.js-BUi8BtjT.js";n();var r=t(null);n();function i(t){return e(r)}export{r as n,i as t};

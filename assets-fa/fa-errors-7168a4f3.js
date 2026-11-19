@@ -1,0 +1,1 @@
+export default {"pluginLoadFailedPrefix":"افزونه","pluginLoadFailedSuffix":"بارگذاری نشد","pluginNoPermissionTitle":"اجازهٔ مشاهدهٔ این صفحه را ندارید","pluginNoPermissionDescription":"از مالک پروژه یا مدیر بخواهید دسترسی به {{pluginName}} را به شما بدهد."};

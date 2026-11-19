@@ -1,0 +1,1 @@
+import{n as e}from"./_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js";import{gt as t}from"./lucide-react-xfXdc0vY.js";import{n}from"./utils-CC7aw0DH.js";function r({className:r,...i}){return e(t,{"data-slot":`spinner`,role:`status`,"aria-label":`Loading`,className:n(`size-4 animate-spin`,r),...i})}export{r as t};

@@ -1,0 +1,1 @@
+import{t as e}from"./use-effective-actions-ji7sXaHL.js";function t(t){let{has:n,isLoading:r}=e(t);return{hasProjectPermission:n,isLoading:r}}export{t};

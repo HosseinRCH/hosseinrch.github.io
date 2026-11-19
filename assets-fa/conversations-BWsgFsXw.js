@@ -1,0 +1,1 @@
+import{n as e}from"./_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js";import{$t as t}from"./index-CxHcvCaY.js";import{t as n}from"./conversations-layout-tQ29Cg2w.js";function r(){let{projectId:r}=t.useParams();return e(n,{projectId:r})}export{r as component};

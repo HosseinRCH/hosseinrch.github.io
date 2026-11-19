@@ -1,0 +1,1 @@
+import{j as e,m as t}from"./_virtual_mf___mfe_internal__host__loadShare__react__loadShare__.js-BUi8BtjT.js";import{i as n}from"./entity-avatar-ZPx0uQyM.js";import{r}from"./member-directory-C41fnI7n.js";e();function i(e){let i=r(e);return t(e=>{let t=i(e.id);return t?n(t):{name:e.name||e.username||``,type:`human`,avatarUrl:e.avatarUrl}},[i])}export{i as t};

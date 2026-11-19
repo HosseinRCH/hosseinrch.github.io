@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-CwIZwLYI.js";function t(t,n={year:`numeric`,month:`long`,day:`numeric`},r){let i=new Date(t);if(Number.isNaN(i.getTime()))return``;let a=r?.dateOnly?{...n,timeZone:`UTC`}:n;return new Intl.DateTimeFormat(e.language,a).format(i)}export{t};

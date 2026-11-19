@@ -1,0 +1,1 @@
+var e=`플러그인`,t=`을(를) 불러오지 못했습니다`,n=`이 페이지를 볼 권한이 없습니다`,r=`{{pluginName}}에 대한 액세스 권한을 프로젝트 소유자 또는 관리자에게 요청하세요.`,i={pluginLoadFailedPrefix:e,pluginLoadFailedSuffix:t,pluginNoPermissionTitle:n,pluginNoPermissionDescription:r};export{i as default,e as pluginLoadFailedPrefix,t as pluginLoadFailedSuffix,r as pluginNoPermissionDescription,n as pluginNoPermissionTitle};

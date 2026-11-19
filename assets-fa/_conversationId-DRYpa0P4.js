@@ -1,0 +1,1 @@
+import{n as e}from"./_virtual_mf___mfe_internal__host__loadShare__react_mf_1_jsx_mf_2_runtime__loadShare__.js-D6TjnZc0.js";import{sn as t}from"./index-CxHcvCaY.js";import{t as n}from"./conversation-view-DTqkWTeC.js";function r(){let{conversationId:r}=t.useParams();return e(n,{conversationId:r})}export{r as component};

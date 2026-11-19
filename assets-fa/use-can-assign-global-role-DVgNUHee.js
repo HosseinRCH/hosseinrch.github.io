@@ -1,0 +1,1 @@
+import{t as e}from"./use-permissions-B0-yNOgd.js";function t(){let{hasPermission:t}=e();return t(`roles:assign`)&&t(`roles:read`)}export{t};
