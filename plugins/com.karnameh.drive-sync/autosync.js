@@ -1,5 +1,5 @@
 const St = "https://api.github.com", jt = "paca.sync.github";
-function E() {
+function v() {
   try {
     const e = localStorage.getItem(jt), t = e ? JSON.parse(e) : null;
     return t && t.repo && t.token ? t : null;
@@ -7,7 +7,7 @@ function E() {
     return null;
   }
 }
-async function Y(e, t, o = {}) {
+async function G(e, t, o = {}) {
   return await fetch(`${St}${t}`, {
     ...o,
     cache: "no-store",
@@ -19,7 +19,7 @@ async function Y(e, t, o = {}) {
     }
   });
 }
-function G(e, t) {
+function W(e, t) {
   throw e.status === 401 ? new Error("توکن گیت‌هاب نامعتبر یا منقضی است") : e.status === 403 ? new Error("توکن اجازهٔ دسترسی ندارد (Contents: Read and write لازم است)") : e.status === 404 ? new Error("مخزن پیدا نشد یا توکن به آن دسترسی ندارد") : new Error(`${t}: GitHub ${e.status}`);
 }
 const dt = (e) => e.split("/").map(encodeURIComponent).join("/");
@@ -35,28 +35,28 @@ function kt(e) {
   for (let n = 0; n < t.length; n++) o[n] = t.charCodeAt(n);
   return new TextDecoder().decode(o);
 }
-let C = null;
+let M = null;
 async function ut() {
-  const e = E();
+  const e = v();
   if (!e) throw new Error("unlinked");
-  const t = await Y(
+  const t = await G(
     e.token,
     `/repos/${e.repo}/contents/${dt(e.path)}?ref=${encodeURIComponent(e.branch || "main")}`
   );
   if (t.status === 404)
-    return C = null, "";
-  t.ok || G(t, "read");
+    return M = null, "";
+  t.ok || W(t, "read");
   const o = await t.json();
-  if (C = o.sha, o.content && o.encoding === "base64") return kt(o.content);
-  const n = await Y(e.token, `/repos/${e.repo}/git/blobs/${o.sha}`, {
+  if (M = o.sha, o.content && o.encoding === "base64") return kt(o.content);
+  const n = await G(e.token, `/repos/${e.repo}/git/blobs/${o.sha}`, {
     headers: { Accept: "application/vnd.github.raw+json" }
   });
-  return n.ok || G(n, "read"), await n.text();
+  return n.ok || W(n, "read"), await n.text();
 }
 async function $t(e) {
-  const t = E();
+  const t = v();
   if (!t) throw new Error("unlinked");
-  const o = (r) => Y(t.token, `/repos/${t.repo}/contents/${dt(t.path)}`, {
+  const o = (r) => G(t.token, `/repos/${t.repo}/contents/${dt(t.path)}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -66,13 +66,13 @@ async function $t(e) {
       ...r ? { sha: r } : {}
     })
   });
-  let n = await o(C);
-  (n.status === 409 || n.status === 422) && (await ut(), n = await o(C)), n.ok || G(n, "write"), C = (await n.json()).content?.sha ?? null;
+  let n = await o(M);
+  (n.status === 409 || n.status === 422) && (await ut(), n = await o(M)), n.ok || W(n, "write"), M = (await n.json()).content?.sha ?? null;
 }
 function At() {
-  return E() ? "github" : mt() ? "drive" : null;
+  return v() ? "github" : mt() ? "drive" : null;
 }
-const N = "https://www.googleapis.com/drive/v3", bt = "https://www.googleapis.com/upload/drive/v3", tt = "Paca", z = "paca-sync.json", et = "application/vnd.google-apps.folder", lt = "paca.sync.token", ft = "paca.sync.link", Tt = "paca.sync.auto", _t = "paca.sync.status";
+const E = "https://www.googleapis.com/drive/v3", bt = "https://www.googleapis.com/upload/drive/v3", tt = "Paca", z = "paca-sync.json", et = "application/vnd.google-apps.folder", lt = "paca.sync.token", ft = "paca.sync.link", _t = "paca.sync.auto", Tt = "paca.sync.status";
 function pt(e, t) {
   try {
     const o = e.getItem(t);
@@ -87,42 +87,42 @@ function yt(e, t, o) {
   } catch {
   }
 }
-let O = pt(sessionStorage, lt);
-function Z() {
-  return E() ? !0 : !!(O && O.value && O.exp - 6e4 > Date.now());
+let D = pt(sessionStorage, lt);
+function X() {
+  return v() ? !0 : !!(D && D.value && D.exp - 6e4 > Date.now());
 }
-async function Pt() {
-  if (Z() && O) return O.value;
+async function Nt() {
+  if (X() && D) return D.value;
   throw new Error("auth");
 }
-function U() {
-  return E() ? { folderId: "", fileId: "github" } : mt();
+function H() {
+  return v() ? { folderId: "", fileId: "github" } : mt();
 }
 function mt() {
   const e = pt(localStorage, ft);
   return e && e.fileId ? e : null;
 }
-function Nt(e) {
+function Pt(e) {
   yt(localStorage, ft, e);
 }
 function Et() {
   try {
-    return localStorage.getItem(Tt) !== "false";
+    return localStorage.getItem(_t) !== "false";
   } catch {
     return !0;
   }
 }
 function vt(e) {
-  yt(localStorage, _t, e);
+  yt(localStorage, Tt, e);
 }
-async function _(e, t = {}) {
-  const o = await Pt(), n = await fetch(e, {
+async function T(e, t = {}) {
+  const o = await Nt(), n = await fetch(e, {
     ...t,
     cache: "no-store",
     headers: { ...t.headers ?? {}, Authorization: `Bearer ${o}` }
   });
   if (n.status === 401) {
-    O = null;
+    D = null;
     try {
       sessionStorage.removeItem(lt);
     } catch {
@@ -132,37 +132,37 @@ async function _(e, t = {}) {
   if (!n.ok) throw new Error(`drive ${n.status}`);
   return n;
 }
-const Lt = (e, t) => `${N}/files?${new URLSearchParams({
+const Lt = (e, t) => `${E}/files?${new URLSearchParams({
   q: e,
   fields: t,
   spaces: "drive",
   pageSize: "10"
 }).toString()}`;
-async function F(e, t) {
-  return (await (await _(Lt(e, t))).json()).files ?? [];
+async function K(e, t) {
+  return (await (await T(Lt(e, t))).json()).files ?? [];
 }
-async function xt() {
-  const t = (await (await _(`${N}/about?fields=user(emailAddress)`)).json()).user?.emailAddress;
-  let n = (await F(
+async function Ot() {
+  const t = (await (await T(`${E}/about?fields=user(emailAddress)`)).json()).user?.emailAddress;
+  let n = (await K(
     `name = '${tt}' and mimeType = '${et}' and 'root' in parents and trashed = false`,
     "files(id)"
   ))[0]?.id;
-  n || (n = (await (await _(`${N}/files?fields=id`, {
+  n || (n = (await (await T(`${E}/files?fields=id`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name: tt, mimeType: et })
   })).json()).id);
-  let r = (await F(
+  let r = (await K(
     `name = '${z}' and '${n}' in parents and trashed = false`,
     "files(id)"
   ))[0]?.id;
   if (!r) {
-    const a = await F(
+    const a = await K(
       `name = '${z}' and 'root' in parents and trashed = false`,
       "files(id)"
     );
-    a[0] && (await _(
-      `${N}/files/${a[0].id}?addParents=${n}&removeParents=root&fields=id`,
+    a[0] && (await T(
+      `${E}/files/${a[0].id}?addParents=${n}&removeParents=root&fields=id`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -170,7 +170,7 @@ async function xt() {
       }
     ), r = a[0].id);
   }
-  r || (r = (await (await _(`${N}/files?fields=id`, {
+  r || (r = (await (await T(`${E}/files?fields=id`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -180,27 +180,27 @@ async function xt() {
     })
   })).json()).id);
   const l = { folderId: n, fileId: r, email: t };
-  return Nt(l), l;
+  return Pt(l), l;
 }
-async function Ot() {
-  if (E()) return ut();
-  const e = U();
+async function xt() {
+  if (v()) return ut();
+  const e = H();
   if (!e) throw new Error("unlinked");
   try {
-    return await (await _(`${N}/files/${e.fileId}?alt=media`)).text();
+    return await (await T(`${E}/files/${e.fileId}?alt=media`)).text();
   } catch (t) {
     if (String(t?.message).includes("404")) {
-      const o = await xt();
-      return await (await _(`${N}/files/${o.fileId}?alt=media`)).text();
+      const o = await Ot();
+      return await (await T(`${E}/files/${o.fileId}?alt=media`)).text();
     }
     throw t;
   }
 }
 async function Dt(e) {
-  if (E()) return $t(e);
-  const t = U();
+  if (v()) return $t(e);
+  const t = H();
   if (!t) throw new Error("unlinked");
-  await _(
+  await T(
     `${bt}/files/${t.fileId}?uploadType=media&fields=id`,
     {
       method: "PATCH",
@@ -209,9 +209,9 @@ async function Dt(e) {
     }
   );
 }
-let M = null;
+let R = null;
 function Bt() {
-  if (M) return M;
+  if (R) return R;
   const e = [document.getElementById("root"), document.getElementById("app"), document.body.firstElementChild];
   for (const t of e) {
     if (!t) continue;
@@ -223,7 +223,7 @@ function Bt() {
       if (s += 1, !r) continue;
       const l = r.memoizedProps?.client;
       if (l && typeof l.invalidateQueries == "function")
-        return M = l, M;
+        return R = l, R;
       r.sibling && n.push(r.sibling), r.child && n.push(r.child), n.length > 5e3 && (n = n.slice(-5e3));
     }
   }
@@ -240,7 +240,16 @@ function Ct() {
   } catch {
   }
 }
-function Mt(e) {
+const Mt = ["word_count", "price_per_word", "amount"];
+function Rt(e) {
+  const t = {};
+  for (const o of Mt) {
+    const n = e?.[o], s = typeof n == "number" ? n : typeof n == "string" && n.trim() !== "" ? Number(n) : NaN;
+    Number.isFinite(s) && (t[o] = s);
+  }
+  return Object.keys(t).length ? t : void 0;
+}
+function Jt(e) {
   if (!e || typeof e != "object") return !1;
   const t = e;
   return t.format === "paca-sync" && Array.isArray(t.projects) && Array.isArray(t.tasks);
@@ -248,27 +257,27 @@ function Mt(e) {
 const nt = (e) => {
   const t = Date.parse(e ?? "");
   return Number.isNaN(t) ? 0 : t;
-}, W = (e, t) => nt(e.updatedAt) >= nt(t.updatedAt) ? { ...t, ...e } : { ...e, ...t };
-function Rt(e, t) {
+}, V = (e, t) => nt(e.updatedAt) >= nt(t.updatedAt) ? { ...t, ...e } : { ...e, ...t };
+function Ut(e, t) {
   if (!e) return t;
   if (!t) return e;
   const o = /* @__PURE__ */ new Map();
   for (const s of t.projects) o.set(s.syncId, s);
   for (const s of e.projects) {
     const r = o.get(s.syncId);
-    o.set(s.syncId, r ? W(s, r) : s);
+    o.set(s.syncId, r ? V(s, r) : s);
   }
   const n = /* @__PURE__ */ new Map();
   for (const s of t.tasks) n.set(s.syncId, s);
   for (const s of e.tasks) {
     const r = n.get(s.syncId);
-    n.set(s.syncId, r ? W(s, r) : s);
+    n.set(s.syncId, r ? V(s, r) : s);
   }
   return {
     // Keep top-level keys Paca does not use (e.g. timeEntries from the offline apps).
     ...t,
     ...e,
-    ...Jt(e, t),
+    ...Ht(e, t),
     format: "paca-sync",
     version: 1,
     exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
@@ -281,7 +290,7 @@ function Rt(e, t) {
     tasks: Array.from(n.values())
   };
 }
-function Jt(e, t) {
+function Ht(e, t) {
   const o = {}, n = [
     ["timeEntries", "id"],
     ["timeLogs", "syncId"]
@@ -292,14 +301,14 @@ function Jt(e, t) {
     const f = /* @__PURE__ */ new Map();
     for (const i of a ?? []) f.set(String(i[r]), i);
     for (const i of l ?? []) {
-      const y = f.get(String(i[r]));
-      f.set(String(i[r]), y ? W(i, y) : i);
+      const m = f.get(String(i[r]));
+      f.set(String(i[r]), m ? V(i, m) : i);
     }
     o[s] = Array.from(f.values());
   }
   return o;
 }
-function B(e) {
+function C(e) {
   return JSON.stringify([e.name ?? "", e.description ?? ""]);
 }
 function st(e) {
@@ -309,11 +318,12 @@ function st(e) {
     e.importance ?? 0,
     e.tags ?? [],
     e.statusName ?? null,
-    R(e.startDate),
-    R(e.dueDate)
+    J(e.startDate),
+    J(e.dueDate),
+    e.fields ?? null
   ]);
 }
-function R(e) {
+function J(e) {
   if (!e) return null;
   const t = Date.parse(e);
   return Number.isNaN(t) ? null : new Date(t).toISOString().slice(0, 10);
@@ -332,11 +342,11 @@ function gt(e) {
   const o = Number(e.seconds);
   return Number.isFinite(o) && o > 0 ? Math.max(1, Math.round(o / 60)) : 0;
 }
-const Ut = "/api/v1", A = "pacaSyncId", v = "pacaSyncSeen", L = "pacaSyncUpdatedAt", V = "pacaSyncTimeLogs", J = "com.paca.time-logging";
+const Ft = "/api/v1", k = "pacaSyncId", L = "pacaSyncSeen", O = "pacaSyncUpdatedAt", q = "pacaSyncTimeLogs", U = "com.paca.time-logging";
 class j extends Error {
 }
-async function w(e, t) {
-  const o = await fetch(`${Ut}${e}`, {
+async function S(e, t) {
+  const o = await fetch(`${Ft}${e}`, {
     ...t,
     credentials: "same-origin",
     headers: {
@@ -359,11 +369,11 @@ async function w(e, t) {
   const n = await o.json();
   return n?.data ?? n;
 }
-async function Ht() {
+async function zt() {
   const e = [];
   let t = 1;
   for (; ; ) {
-    const o = await w(
+    const o = await S(
       `/projects?page=${t}&page_size=100`
     ), n = o.items ?? [];
     e.push(...n);
@@ -373,13 +383,13 @@ async function Ht() {
   }
   return e;
 }
-let K = !0;
-async function zt(e) {
+let Y = !0;
+async function Kt(e) {
   try {
-    return await rt(e, K);
+    return await rt(e, Y);
   } catch (t) {
-    if (!K || t instanceof j) throw t;
-    return K = !1, rt(e, !1);
+    if (!Y || t instanceof j) throw t;
+    return Y = !1, rt(e, !1);
   }
 }
 async function rt(e, t) {
@@ -388,16 +398,16 @@ async function rt(e, t) {
   for (; ; ) {
     const s = new URLSearchParams({ page_size: "200" });
     t && s.set("include", "assignees"), n && s.set("cursor", n);
-    const r = await w(
+    const r = await S(
       `/projects/${e}/tasks?${s.toString()}`
     );
     if (o.push(...r.items ?? []), n = r.next_cursor ?? null, !n) break;
   }
   return o;
 }
-async function Ft(e) {
+async function Yt(e) {
   try {
-    const t = await w(
+    const t = await S(
       `/projects/${e}/task-statuses`
     );
     return Array.isArray(t) ? t : t.items ?? [];
@@ -406,9 +416,9 @@ async function Ft(e) {
     return [];
   }
 }
-async function Kt(e) {
+async function Gt(e) {
   try {
-    const t = await w(
+    const t = await S(
       `/projects/${e}/members?page_size=100`
     );
     return Array.isArray(t) ? t : t.items ?? [];
@@ -418,14 +428,14 @@ async function Kt(e) {
   }
 }
 const at = (e) => e && (e.full_name || e.agent_name || e.username) || "";
-async function Yt(e, t) {
-  const o = await Gt(e);
+async function Wt(e, t) {
+  const o = await Vt(e);
   if (o) return o;
   const n = [];
   for (const s of t)
     try {
-      const r = await w(
-        `/plugins/${J}/projects/${e}/tasks/${s}/time-logs`
+      const r = await S(
+        `/plugins/${U}/projects/${e}/tasks/${s}/time-logs`
       );
       n.push(...Array.isArray(r) ? r : r?.logs ?? []);
     } catch (r) {
@@ -434,13 +444,13 @@ async function Yt(e, t) {
     }
   return n;
 }
-async function Gt(e) {
+async function Vt(e) {
   const t = [];
   for (let o = 1; o <= 200; o += 1) {
     let n;
     try {
-      n = await w(
-        `/plugins/${J}/projects/${e}/time-logs?page_size=100&page=${o}`
+      n = await S(
+        `/plugins/${U}/projects/${e}/time-logs?page_size=100&page=${o}`
       );
     } catch (l) {
       if (l instanceof j) throw l;
@@ -459,120 +469,120 @@ function x() {
     return (e === "x" ? t : t & 3 | 8).toString(16);
   });
 }
-async function Wt(e) {
-  const t = await Ht(), o = [], n = /* @__PURE__ */ new Map(), s = /* @__PURE__ */ new Map();
+async function qt(e) {
+  const t = await zt(), o = [], n = /* @__PURE__ */ new Map(), s = /* @__PURE__ */ new Map();
   let r = [], l = !1;
-  for (let d = 0; d < t.length; d += 1) {
-    const u = t[d].id, p = await zt(u);
-    if (o.push(...p), n.set(u, await Ft(u)), r) {
-      const h = p.length ? await Yt(u, p.map((I) => I.id)) : [];
-      h === null ? r = null : p.length && (l = !0, r.push(...h), h.length && s.set(u, await Kt(u)));
+  for (let c = 0; c < t.length; c += 1) {
+    const u = t[c].id, p = await Kt(u);
+    if (o.push(...p), n.set(u, await Yt(u)), r) {
+      const w = p.length ? await Wt(u, p.map((I) => I.id)) : [];
+      w === null ? r = null : p.length && (l = !0, r.push(...w), w.length && s.set(u, await Gt(u)));
     }
   }
-  const a = [], f = /* @__PURE__ */ new Map(), i = /* @__PURE__ */ new Map(), y = (/* @__PURE__ */ new Date()).toISOString();
-  for (const d of t) {
-    const u = { ...d.settings ?? {} }, p = B({
-      name: d.name,
-      description: d.description ?? "",
-      createdAt: d.created_at,
-      updatedAt: d.created_at
+  const a = [], f = /* @__PURE__ */ new Map(), i = /* @__PURE__ */ new Map(), m = (/* @__PURE__ */ new Date()).toISOString();
+  for (const c of t) {
+    const u = { ...c.settings ?? {} }, p = C({
+      name: c.name,
+      description: c.description ?? "",
+      createdAt: c.created_at,
+      updatedAt: c.created_at
     });
-    let h = !1, I = typeof u[A] == "string" ? u[A] : "";
-    I || (I = x(), u[A] = I, h = !0);
-    const b = typeof u[v] == "string" ? u[v] : null;
-    let $;
-    b === null ? (u[v] = p, u[L] = d.created_at, $ = d.created_at, h = !0) : b !== p ? (u[v] = p, u[L] = y, $ = y, h = !0) : $ = typeof u[L] == "string" ? u[L] : d.created_at, h && (await w(`/projects/${d.id}`, {
+    let w = !1, I = typeof u[k] == "string" ? u[k] : "";
+    I || (I = x(), u[k] = I, w = !0);
+    const b = typeof u[L] == "string" ? u[L] : null;
+    let _;
+    b === null ? (u[L] = p, u[O] = c.created_at, _ = c.created_at, w = !0) : b !== p ? (u[L] = p, u[O] = m, _ = m, w = !0) : _ = typeof u[O] == "string" ? u[O] : c.created_at, w && (await S(`/projects/${c.id}`, {
       method: "PATCH",
       body: JSON.stringify({ settings: u })
-    }), d.settings = u), i.set(d.id, I), f.set(I, d), a.push({
+    }), c.settings = u), i.set(c.id, I), f.set(I, c), a.push({
       syncId: I,
-      name: d.name,
-      description: d.description ?? "",
-      createdAt: d.created_at,
-      updatedAt: $
+      name: c.name,
+      description: c.description ?? "",
+      createdAt: c.created_at,
+      updatedAt: _
     });
   }
-  const c = [], g = /* @__PURE__ */ new Map();
-  for (const d of o) {
-    const u = { ...d.custom_fields ?? {} };
-    let p = typeof u[A] == "string" ? u[A] : "";
+  const d = [], y = /* @__PURE__ */ new Map();
+  for (const c of o) {
+    const u = { ...c.custom_fields ?? {} };
+    let p = typeof u[k] == "string" ? u[k] : "";
     if (!p) {
       p = x();
-      const $ = await w(
-        `/projects/${d.project_id}/tasks/${d.id}`,
+      const N = await S(
+        `/projects/${c.project_id}/tasks/${c.id}`,
         {
           method: "PATCH",
           body: JSON.stringify({
-            custom_fields: { ...u, [A]: p }
+            custom_fields: { ...u, [k]: p }
           })
         }
       );
-      $?.updated_at && (d.updated_at = $.updated_at);
+      N?.updated_at && (c.updated_at = N.updated_at);
     }
-    g.set(p, d);
-    const h = (n.get(d.project_id) ?? []).find(
-      ($) => $.id === d.status_id
-    ), I = (d.assignees ?? []).map(at).filter(Boolean), b = {
+    y.set(p, c);
+    const w = (n.get(c.project_id) ?? []).find(
+      (N) => N.id === c.status_id
+    ), I = (c.assignees ?? []).map(at).filter(Boolean), b = {
       syncId: p,
-      projectSyncId: i.get(d.project_id) ?? "",
-      title: d.title,
-      description: d.description ?? null,
-      importance: d.importance ?? 0,
-      tags: d.tags ?? [],
-      createdAt: d.created_at,
-      updatedAt: d.updated_at ?? d.created_at,
-      startDate: d.start_date ?? null,
-      dueDate: d.due_date ?? null
-    };
-    h && (b.statusName = h.name, b.statusCategory = h.category), d.assignees && (b.assignee = I[0] ?? null, b.assignees = I), c.push(b);
+      projectSyncId: i.get(c.project_id) ?? "",
+      title: c.title,
+      description: c.description ?? null,
+      importance: c.importance ?? 0,
+      tags: c.tags ?? [],
+      createdAt: c.created_at,
+      updatedAt: c.updated_at ?? c.created_at,
+      startDate: c.start_date ?? null,
+      dueDate: c.due_date ?? null
+    }, _ = Rt(c.custom_fields);
+    _ && (b.fields = _), w && (b.statusName = w.name, b.statusCategory = w.category), c.assignees && (b.assignee = I[0] ?? null, b.assignees = I), d.push(b);
   }
-  const S = new Map(o.map((d) => [d.id, d])), T = new Map(t.map((d) => [d.id, d])), k = /* @__PURE__ */ new Map();
-  let m = null;
+  const h = new Map(o.map((c) => [c.id, c])), $ = new Map(t.map((c) => [c.id, c])), A = /* @__PURE__ */ new Map();
+  let g = null;
   if (r && l) {
-    m = [];
+    g = [];
     for (const u of r) {
-      const p = S.get(u.task_id);
+      const p = h.get(u.task_id);
       if (!p) continue;
-      const I = T.get(p.project_id)?.settings?.[V] ?? {}, b = typeof I[u.id] == "string" ? I[u.id] : u.id;
-      k.set(b, u);
-      const $ = Number(u.minutes_spent) || 0, X = (s.get(p.project_id) ?? []).find(
+      const I = $.get(p.project_id)?.settings?.[q] ?? {}, b = typeof I[u.id] == "string" ? I[u.id] : u.id;
+      A.set(b, u);
+      const _ = Number(u.minutes_spent) || 0, N = (s.get(p.project_id) ?? []).find(
         (wt) => wt.id === u.member_id
       );
-      m.push({
+      g.push({
         syncId: b,
-        taskSyncId: String(p.custom_fields?.[A] ?? ""),
+        taskSyncId: String(p.custom_fields?.[k] ?? ""),
         projectSyncId: i.get(p.project_id) ?? "",
         date: String(u.spent_date ?? "").slice(0, 10),
-        minutes: $,
-        seconds: $ * 60,
+        minutes: _,
+        seconds: _ * 60,
         note: u.note ?? "",
-        ...X ? { member: at(X) } : {},
+        ...N ? { member: at(N) } : {},
         createdAt: u.created_at,
         updatedAt: u.updated_at || u.created_at
       });
     }
-    const d = /* @__PURE__ */ new Map();
-    for (const [u, p] of g) d.set(p.id, u);
-    for (const u of m)
+    const c = /* @__PURE__ */ new Map();
+    for (const [u, p] of y) c.set(p.id, u);
+    for (const u of g)
       if (!u.taskSyncId) {
-        const p = k.get(u.syncId);
-        u.taskSyncId = (p && d.get(p.task_id)) ?? "";
+        const p = A.get(u.syncId);
+        u.taskSyncId = (p && c.get(p.task_id)) ?? "";
       }
   }
   return {
     projects: t,
     tasks: o,
     projectRecords: a,
-    taskRecords: c,
+    taskRecords: d,
     projectBySync: f,
-    taskBySync: g,
+    taskBySync: y,
     statusesByProject: n,
-    timeLogRecords: m,
-    logBySync: k,
+    timeLogRecords: g,
+    logBySync: A,
     localTimeLogs: r ?? []
   };
 }
-function Vt(e, t) {
+function Qt(e, t) {
   return {
     format: "paca-sync",
     version: 1,
@@ -591,38 +601,40 @@ const P = (e) => {
   const t = e?.message ?? String(e);
   return /Failed to fetch|NetworkError|Load failed/i.test(t) ? "ارتباط با سرور محلی پاکا برقرار نشد" : t;
 };
-async function qt(e, t, o) {
+async function Zt(e, t, o) {
   const n = {
     title: t.title || "(بدون عنوان)",
-    custom_fields: { [A]: t.syncId }
+    custom_fields: { [k]: t.syncId }
   };
   try {
-    return await w(`/projects/${e}/tasks`, {
+    return await S(`/projects/${e}/tasks`, {
       method: "POST",
       body: JSON.stringify({
         ...n,
-        description: Q(t) ?? void 0,
+        custom_fields: { ...t.fields ?? {}, [k]: t.syncId },
+        description: Z(t) ?? void 0,
         importance: t.importance ?? 0,
         tags: t.tags ?? [],
-        ...q(t, null, o)
+        ...Q(t, null, o)
       })
     });
   } catch (s) {
     if (s instanceof j) throw s;
-    const r = await w(`/projects/${e}/tasks`, {
+    const r = await S(`/projects/${e}/tasks`, {
       method: "POST",
       body: JSON.stringify(n)
     }).catch((a) => {
       throw a instanceof j ? a : new Error(`${P(s)} / ${P(a)}`);
     }), l = [
-      { description: Q(t) ?? void 0 },
+      { description: Z(t) ?? void 0 },
       { importance: t.importance ?? 0 },
       { tags: t.tags ?? [] },
-      ...Object.entries(q(t, null, o)).map(([a, f]) => ({ [a]: f }))
+      ...t.fields ? [{ custom_fields: { ...t.fields, [k]: t.syncId } }] : [],
+      ...Object.entries(Q(t, null, o)).map(([a, f]) => ({ [a]: f }))
     ];
     for (const a of l)
       try {
-        await w(`/projects/${e}/tasks/${r.id}`, {
+        await S(`/projects/${e}/tasks/${r.id}`, {
           method: "PATCH",
           body: JSON.stringify(a)
         });
@@ -632,29 +644,29 @@ async function qt(e, t, o) {
     return r;
   }
 }
-async function Qt(e, t) {
+async function Xt(e, t) {
   if (!t) return 0;
   const o = new Set(t.projects.map((r) => r.syncId)), n = (r) => (r || "").replace(/\s+/g, " ").trim();
   let s = 0;
   for (const r of t.projects) {
     if (r.deleted || e.projectBySync.has(r.syncId)) continue;
     const l = e.projectRecords.filter(
-      (c) => !o.has(c.syncId) && n(c.name) === n(r.name)
+      (d) => !o.has(d.syncId) && n(d.name) === n(r.name)
     );
     if (l.length !== 1) continue;
     const a = l[0], f = e.projectBySync.get(a.syncId);
     if (!f) continue;
-    const i = { ...f.settings ?? {}, [A]: r.syncId };
-    await w(`/projects/${f.id}`, { method: "PATCH", body: JSON.stringify({ settings: i }) }), f.settings = i;
-    const y = a.syncId;
-    e.projectBySync.delete(y), e.projectBySync.set(r.syncId, f), a.syncId = r.syncId;
-    for (const c of e.taskRecords) c.projectSyncId === y && (c.projectSyncId = r.syncId);
-    for (const c of e.timeLogRecords ?? []) c.projectSyncId === y && (c.projectSyncId = r.syncId);
+    const i = { ...f.settings ?? {}, [k]: r.syncId };
+    await S(`/projects/${f.id}`, { method: "PATCH", body: JSON.stringify({ settings: i }) }), f.settings = i;
+    const m = a.syncId;
+    e.projectBySync.delete(m), e.projectBySync.set(r.syncId, f), a.syncId = r.syncId;
+    for (const d of e.taskRecords) d.projectSyncId === m && (d.projectSyncId = r.syncId);
+    for (const d of e.timeLogRecords ?? []) d.projectSyncId === m && (d.projectSyncId = r.syncId);
     s += 1;
   }
   return s;
 }
-async function Zt(e, t, o = /* @__PURE__ */ new Set()) {
+async function te(e, t, o = /* @__PURE__ */ new Set()) {
   const n = {
     createdProjects: 0,
     createdTasks: 0,
@@ -675,103 +687,109 @@ async function Zt(e, t, o = /* @__PURE__ */ new Set()) {
     const f = t.projectBySync.get(a.syncId);
     if (a.deleted) continue;
     if (!f) {
-      let c;
+      let d;
       try {
-        c = await w("/projects", {
+        d = await S("/projects", {
           method: "POST",
           body: JSON.stringify({
             name: a.name,
             description: a.description ?? "",
-            task_id_prefix: ee(a.name, a.syncId),
+            task_id_prefix: se(a.name, a.syncId),
             settings: {
-              [A]: a.syncId,
-              [v]: B(a),
-              [L]: a.updatedAt
+              [k]: a.syncId,
+              [L]: C(a),
+              [O]: a.updatedAt
             }
           })
         });
-      } catch (g) {
-        if (g instanceof j) throw g;
-        n.failures.push(`پروژهٔ «${a.name}» ساخته نشد: ${P(g)}`);
+      } catch (y) {
+        if (y instanceof j) throw y;
+        n.failures.push(`پروژهٔ «${a.name}» ساخته نشد: ${P(y)}`);
         continue;
       }
-      l.set(a.syncId, c.id), n.presentProjects.push(a.syncId), n.createdProjects += 1;
+      l.set(a.syncId, d.id), n.presentProjects.push(a.syncId), n.createdProjects += 1;
       continue;
     }
     l.set(a.syncId, f.id), n.presentProjects.push(a.syncId);
     const i = s.get(a.syncId);
-    if (!i || B(i) === B(a) || Date.parse(a.updatedAt) <= Date.parse(i.updatedAt)) continue;
-    const y = { ...f.settings ?? {} };
-    y[A] = a.syncId, y[v] = B(a), y[L] = a.updatedAt;
+    if (!i || C(i) === C(a) || Date.parse(a.updatedAt) <= Date.parse(i.updatedAt)) continue;
+    const m = { ...f.settings ?? {} };
+    m[k] = a.syncId, m[L] = C(a), m[O] = a.updatedAt;
     try {
-      await w(`/projects/${f.id}`, {
+      await S(`/projects/${f.id}`, {
         method: "PATCH",
         body: JSON.stringify({
           name: a.name,
           description: a.description ?? "",
-          settings: y
+          settings: m
         })
       }), n.updatedProjects += 1;
-    } catch (c) {
-      if (c instanceof j) throw c;
-      n.failures.push(`پروژهٔ «${a.name}» به‌روز نشد: ${P(c)}`);
+    } catch (d) {
+      if (d instanceof j) throw d;
+      n.failures.push(`پروژهٔ «${a.name}» به‌روز نشد: ${P(d)}`);
     }
   }
   for (const a of e.tasks) {
     const f = t.taskBySync.get(a.syncId);
     if (!f && a.deleted) continue;
     if (!f) {
-      const c = l.get(a.projectSyncId);
-      if (!c) {
-        const g = e.projects.find((S) => S.syncId === a.projectSyncId);
+      const y = l.get(a.projectSyncId);
+      if (!y) {
+        const h = e.projects.find(($) => $.syncId === a.projectSyncId);
         n.failures.push(
-          g ? `کار «${a.title}» منتقل نشد: پروژهٔ «${g.name}» در این دستگاه ساخته نشد` : `کار «${a.title}» منتقل نشد: پروژهٔ آن در فایل همگام‌سازی نیست`
+          h ? `کار «${a.title}» منتقل نشد: پروژهٔ «${h.name}» در این دستگاه ساخته نشد` : `کار «${a.title}» منتقل نشد: پروژهٔ آن در فایل همگام‌سازی نیست`
         );
         continue;
       }
       try {
-        const g = await qt(
-          c,
+        const h = await Zt(
+          y,
           a,
-          t.statusesByProject.get(c) ?? []
+          t.statusesByProject.get(y) ?? []
         );
-        g?.id && t.taskBySync.set(a.syncId, { ...g, project_id: c }), n.createdTasks += 1;
-      } catch (g) {
-        if (g instanceof j) throw g;
-        n.failures.push(`کار «${a.title}» ساخته نشد: ${P(g)}`);
+        h?.id && t.taskBySync.set(a.syncId, { ...h, project_id: y }), n.createdTasks += 1;
+      } catch (h) {
+        if (h instanceof j) throw h;
+        n.failures.push(`کار «${a.title}» ساخته نشد: ${P(h)}`);
       }
       continue;
     }
     const i = r.get(a.syncId);
     if (!i || st(i) === st(a) || Date.parse(a.updatedAt) <= Date.parse(i.updatedAt)) continue;
-    const y = { ...f.custom_fields ?? {} };
+    const m = { ...f.custom_fields ?? {} }, d = (y) => S(`/projects/${f.project_id}/tasks/${f.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        title: a.title,
+        description: Z(a) ?? void 0,
+        importance: a.importance ?? 0,
+        tags: a.tags ?? [],
+        custom_fields: { ...m, ...y ? a.fields ?? {} : {}, [k]: a.syncId },
+        ...Q(a, f, t.statusesByProject.get(f.project_id) ?? [])
+      })
+    });
     try {
-      await w(`/projects/${f.project_id}/tasks/${f.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          title: a.title,
-          description: Q(a) ?? void 0,
-          importance: a.importance ?? 0,
-          tags: a.tags ?? [],
-          custom_fields: { ...y, [A]: a.syncId },
-          ...q(a, f, t.statusesByProject.get(f.project_id) ?? [])
-        })
-      }), n.updatedTasks += 1;
-    } catch (c) {
-      if (c instanceof j) throw c;
-      n.failures.push(`کار «${a.title}» به‌روز نشد: ${P(c)}`);
+      try {
+        await d(!0);
+      } catch (y) {
+        if (y instanceof j || !a.fields) throw y;
+        await d(!1);
+      }
+      n.updatedTasks += 1;
+    } catch (y) {
+      if (y instanceof j) throw y;
+      n.failures.push(`کار «${a.title}» به‌روز نشد: ${P(y)}`);
     }
   }
   if (t.timeLogRecords && Array.isArray(e.timeLogs))
     try {
-      await te(e, t, o, n);
+      await ne(e, t, o, n);
     } catch (a) {
       if (a instanceof j) throw a;
       n.failures.push(`زمان‌های ثبت‌شده منتقل نشدند: ${P(a)}`);
     }
   return n;
 }
-function q(e, t, o) {
+function Q(e, t, o) {
   const n = {};
   if (e.statusName !== void 0 || e.statusCategory !== void 0) {
     const s = o.find((r) => r.name === e.statusName) ?? o.find((r) => r.category === e.statusCategory);
@@ -782,17 +800,17 @@ function q(e, t, o) {
     ["dueDate", "due_date"]
   ]) {
     const l = e[s];
-    l !== void 0 && R(l) !== R(t?.[r] ?? null) && (l === null ? n[r] = null : Number.isNaN(Date.parse(l)) || (n[r] = new Date(l).toISOString()));
+    l !== void 0 && J(l) !== J(t?.[r] ?? null) && (l === null ? n[r] = null : Number.isNaN(Date.parse(l)) || (n[r] = new Date(l).toISOString()));
   }
   return n;
 }
-function Q(e) {
+function Z(e) {
   const t = e.description;
   if (Array.isArray(t)) return t;
   const o = typeof t == "string" ? t : e.descriptionMarkdown ?? null;
-  return typeof o != "string" ? t ?? null : Xt(o);
+  return typeof o != "string" ? t ?? null : ee(o);
 }
-function Xt(e) {
+function ee(e) {
   const t = { textColor: "default", backgroundColor: "default", textAlignment: "right" }, o = (s) => s.split(/(\*\*[^*]+\*\*)/).filter(Boolean).map(
     (r) => r.startsWith("**") && r.endsWith("**") ? { type: "text", text: r.slice(2, -2), styles: { bold: !0 } } : { type: "text", text: r, styles: {} }
   ), n = [];
@@ -804,37 +822,37 @@ function Xt(e) {
   }
   return n;
 }
-async function te(e, t, o, n) {
+async function ne(e, t, o, n) {
   const s = /* @__PURE__ */ new Map();
   for (const i of t.timeLogRecords ?? []) s.set(i.syncId, i);
   const r = /* @__PURE__ */ new Map(), l = (i) => {
-    let y = r.get(i.id);
-    return y || (y = { ...i.settings ?? {} }, r.set(i.id, y)), y;
-  }, a = async (i, y, c) => {
-    const g = t.projects.find((k) => k.id === i);
-    if (!g) return;
-    const S = l(g), T = { ...S[V] ?? {} };
-    T[y] = c, S[V] = T, await w(`/projects/${i}`, {
+    let m = r.get(i.id);
+    return m || (m = { ...i.settings ?? {} }, r.set(i.id, m)), m;
+  }, a = async (i, m, d) => {
+    const y = t.projects.find((A) => A.id === i);
+    if (!y) return;
+    const h = l(y), $ = { ...h[q] ?? {} };
+    $[m] = d, h[q] = $, await S(`/projects/${i}`, {
       method: "PATCH",
-      body: JSON.stringify({ settings: S })
-    }), g.settings = S;
+      body: JSON.stringify({ settings: h })
+    }), y.settings = h;
   }, f = /* @__PURE__ */ new Set();
   for (const i of e.timeLogs ?? []) {
     if (i.deleted) continue;
-    const y = gt(i), c = String(i.date ?? "").slice(0, 10);
-    if (!y || !/^\d{4}-\d{2}-\d{2}$/.test(c)) continue;
-    const g = t.logBySync.get(i.syncId);
-    if (g) {
-      const m = s.get(i.syncId);
-      if (!m || ot(m) === ot(i) || Date.parse(i.updatedAt) <= Date.parse(m.updatedAt)) continue;
-      const d = t.tasks.find((u) => u.id === g.task_id);
-      if (!d) continue;
+    const m = gt(i), d = String(i.date ?? "").slice(0, 10);
+    if (!m || !/^\d{4}-\d{2}-\d{2}$/.test(d)) continue;
+    const y = t.logBySync.get(i.syncId);
+    if (y) {
+      const g = s.get(i.syncId);
+      if (!g || ot(g) === ot(i) || Date.parse(i.updatedAt) <= Date.parse(g.updatedAt)) continue;
+      const c = t.tasks.find((u) => u.id === y.task_id);
+      if (!c) continue;
       try {
-        await w(
-          `/plugins/${J}/projects/${d.project_id}/tasks/${d.id}/time-logs/${g.id}`,
+        await S(
+          `/plugins/${U}/projects/${c.project_id}/tasks/${c.id}/time-logs/${y.id}`,
           {
             method: "PATCH",
-            body: JSON.stringify({ spent_date: c, minutes_spent: y, note: i.note ?? "" })
+            body: JSON.stringify({ spent_date: d, minutes_spent: m, note: i.note ?? "" })
           }
         ), n.updatedTimeLogs += 1;
       } catch (u) {
@@ -842,45 +860,45 @@ async function te(e, t, o, n) {
       }
       continue;
     }
-    const S = t.taskBySync.get(i.taskSyncId);
-    if (!S) continue;
-    const T = t.localTimeLogs.find((m) => {
-      const d = (s.get(m.id) ? m.id : "") || "";
-      return d && !o.has(d) && !f.has(d) && m.task_id === S.id && String(m.spent_date).slice(0, 10) === c && Number(m.minutes_spent) === y && (m.note ?? "") === (i.note ?? "");
+    const h = t.taskBySync.get(i.taskSyncId);
+    if (!h) continue;
+    const $ = t.localTimeLogs.find((g) => {
+      const c = (s.get(g.id) ? g.id : "") || "";
+      return c && !o.has(c) && !f.has(c) && g.task_id === h.id && String(g.spent_date).slice(0, 10) === d && Number(g.minutes_spent) === m && (g.note ?? "") === (i.note ?? "");
     });
-    if (T) {
-      await a(S.project_id, T.id, i.syncId), f.add(T.id);
+    if ($) {
+      await a(h.project_id, $.id, i.syncId), f.add($.id);
       continue;
     }
-    let k = null;
+    let A = null;
     try {
-      k = await w(
-        `/plugins/${J}/projects/${S.project_id}/tasks/${S.id}/time-logs`,
+      A = await S(
+        `/plugins/${U}/projects/${h.project_id}/tasks/${h.id}/time-logs`,
         {
           method: "POST",
-          body: JSON.stringify({ spent_date: c, minutes_spent: y, note: i.note ?? "" })
+          body: JSON.stringify({ spent_date: d, minutes_spent: m, note: i.note ?? "" })
         }
       );
-    } catch (m) {
-      if (m instanceof j) throw m;
+    } catch (g) {
+      if (g instanceof j) throw g;
       continue;
     }
-    k?.id && await a(S.project_id, k.id, i.syncId), n.createdTimeLogs += 1;
+    A?.id && await a(h.project_id, A.id, i.syncId), n.createdTimeLogs += 1;
   }
   f.size && (e.timeLogs = (e.timeLogs ?? []).filter((i) => !f.has(i.syncId)));
 }
-function ee(e, t) {
+function se(e, t) {
   const o = (e || "").toUpperCase().replace(/[^A-Z0-9]/g, ""), n = (t || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
   return ((o.length >= 2 ? o.slice(0, 4) : "P") + n.slice(-4)).slice(0, 10) || "PACA";
 }
-async function ne(e, t) {
+async function oe(e, t) {
   const o = [];
   for (const n of e.projects) {
     if (!n.deleted) continue;
     const s = t.projectBySync.get(n.syncId);
     if (!s) continue;
     try {
-      await w(`/projects/${s.id}`, { method: "DELETE" });
+      await S(`/projects/${s.id}`, { method: "DELETE" });
     } catch (l) {
       if (l instanceof j) throw l;
       continue;
@@ -909,21 +927,22 @@ function it(e) {
     s.assignee ?? null,
     s.startDate ?? null,
     s.dueDate ?? null,
-    !!s.deleted
+    !!s.deleted,
+    JSON.stringify(s.fields ?? null)
   ]), n = [...e.timeLogs ?? []].sort((s, r) => s.syncId.localeCompare(r.syncId)).map((s) => [s.syncId, s.taskSyncId, s.date, s.minutes, s.note, s.updatedAt, !!s.deleted]);
   return JSON.stringify([t, o, n]);
 }
-function se(e) {
+function re(e) {
   if (!e || !e.trim()) return null;
   try {
     const t = JSON.parse(e);
-    return Mt(t) ? t : null;
+    return Jt(t) ? t : null;
   } catch {
     return null;
   }
 }
 const ht = "paca-sync.known-projects";
-function oe() {
+function ae() {
   try {
     const e = localStorage.getItem(ht);
     if (!e) return null;
@@ -933,13 +952,13 @@ function oe() {
     return null;
   }
 }
-function re(e) {
+function ie(e) {
   try {
     localStorage.setItem(ht, JSON.stringify(e));
   } catch {
   }
 }
-function ae(e, t, o) {
+function ce(e, t, o) {
   const n = (/* @__PURE__ */ new Date()).toISOString(), s = [], r = /* @__PURE__ */ new Set();
   o && ![...o].some((i) => t.has(i)) && (o = null);
   const l = e.projects.map((i) => i.deleted ? (r.add(i.syncId), i) : o && o.has(i.syncId) && !t.has(i.syncId) ? (r.add(i.syncId), s.push(i.name), { ...i, deleted: !0, updatedAt: n }) : i);
@@ -951,36 +970,36 @@ function ae(e, t, o) {
   );
   return { bundle: { ...e, projects: l, tasks: a, ...f ? { timeLogs: f } : {} }, deletedHere: s };
 }
-let D = null;
-function ie(e = {}) {
-  return D || (D = (async () => {
+let B = null;
+function de(e = {}) {
+  return B || (B = (async () => {
     const t = () => Date.now();
     try {
-      if (!U())
+      if (!H())
         return {
           outcome: "NOT_LINKED",
           message: "هنوز به گوگل درایو یا گیت‌هاب وصل نشده.",
           at: t()
         };
-      if (!Z())
+      if (!X())
         return {
           outcome: "NEEDS_PERMISSION",
           message: "برای همگام‌سازی، دسترسی گوگل را دوباره تأیید کنید.",
           at: t()
         };
       e.onPhase?.("در حال خواندن فایل همگام‌سازی…");
-      const o = await Ot(), n = se(o);
+      const o = await xt(), n = re(o);
       e.onPhase?.("در حال خواندن داده‌های پاکا…");
-      const s = await Wt();
-      await Qt(s, n);
-      const r = Vt(s, n?.sync?.rev ?? 0), l = oe(), { bundle: a, deletedHere: f } = ae(
-        Rt(r, n) ?? r,
+      const s = await qt();
+      await Xt(s, n);
+      const r = Qt(s, n?.sync?.rev ?? 0), l = ae(), { bundle: a, deletedHere: f } = ce(
+        Ut(r, n) ?? r,
         new Set(s.projectBySync.keys()),
         l
-      ), i = await ne(a, s), y = new Set((n?.timeLogs ?? []).map((p) => p.syncId)), c = await Zt(a, s, y), g = it(n), S = it(a), T = c.createdProjects + c.createdTasks + c.updatedProjects + c.updatedTasks + c.createdTimeLogs + c.updatedTimeLogs + f.length + i.length;
-      if (g !== S || !n) {
+      ), i = await oe(a, s), m = new Set((n?.timeLogs ?? []).map((p) => p.syncId)), d = await te(a, s, m), y = it(n), h = it(a), $ = d.createdProjects + d.createdTasks + d.updatedProjects + d.updatedTasks + d.createdTimeLogs + d.updatedTimeLogs + f.length + i.length;
+      if (y !== h || !n) {
         e.onPhase?.("در حال نوشتن فایل همگام‌سازی…");
-        const p = Math.max(n?.sync?.rev ?? 0, 0) + 1, h = {
+        const p = Math.max(n?.sync?.rev ?? 0, 0) + 1, w = {
           ...a,
           exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
           sync: {
@@ -989,32 +1008,32 @@ function ie(e = {}) {
             updatedAt: (/* @__PURE__ */ new Date()).toISOString()
           }
         };
-        await Dt(JSON.stringify(h, null, 2));
+        await Dt(JSON.stringify(w, null, 2));
       }
-      re(c.presentProjects);
-      const k = a.tasks.filter(
+      ie(d.presentProjects);
+      const A = a.tasks.filter(
         (p) => !p.deleted && !s.taskBySync.has(p.syncId)
-      ), m = (p) => String(p).replace(/\d/g, (h) => "۰۱۲۳۴۵۶۷۸۹"[Number(h)]), d = [];
-      c.createdProjects && d.push(`${m(c.createdProjects)} پروژهٔ جدید`), c.createdTasks && d.push(`${m(c.createdTasks)} کار جدید`), c.updatedProjects && d.push(`${m(c.updatedProjects)} پروژهٔ به‌روزشده`), c.updatedTasks && d.push(`${m(c.updatedTasks)} کار به‌روزشده`), c.createdTimeLogs && d.push(`${m(c.createdTimeLogs)} زمان ثبت‌شدهٔ جدید`), c.updatedTimeLogs && d.push(`${m(c.updatedTimeLogs)} زمان به‌روزشده`), f.length && d.push(`حذف پروژهٔ ${f.map((p) => `«${p}»`).join("، ")} در فایل ثبت شد`), i.length && d.push(`پروژهٔ ${i.map((p) => `«${p}»`).join("، ")} که جای دیگر حذف شده بود این‌جا هم حذف شد`);
-      const u = `در این دستگاه: ${m(s.projects.length + c.createdProjects)} پروژه و ${m(s.taskBySync.size)} کار (کارها در «بک‌لاگ محصول» هر پروژه).`;
-      if (c.failures.length || k.length) {
-        const p = c.failures.slice(0, 3).join("؛ "), h = c.failures.length > 3 ? ` و ${m(c.failures.length - 3)} مورد دیگر` : "";
+      ), g = (p) => String(p).replace(/\d/g, (w) => "۰۱۲۳۴۵۶۷۸۹"[Number(w)]), c = [];
+      d.createdProjects && c.push(`${g(d.createdProjects)} پروژهٔ جدید`), d.createdTasks && c.push(`${g(d.createdTasks)} کار جدید`), d.updatedProjects && c.push(`${g(d.updatedProjects)} پروژهٔ به‌روزشده`), d.updatedTasks && c.push(`${g(d.updatedTasks)} کار به‌روزشده`), d.createdTimeLogs && c.push(`${g(d.createdTimeLogs)} زمان ثبت‌شدهٔ جدید`), d.updatedTimeLogs && c.push(`${g(d.updatedTimeLogs)} زمان به‌روزشده`), f.length && c.push(`حذف پروژهٔ ${f.map((p) => `«${p}»`).join("، ")} در فایل ثبت شد`), i.length && c.push(`پروژهٔ ${i.map((p) => `«${p}»`).join("، ")} که جای دیگر حذف شده بود این‌جا هم حذف شد`);
+      const u = `در این دستگاه: ${g(s.projects.length + d.createdProjects)} پروژه و ${g(s.taskBySync.size)} کار (کارها در «بک‌لاگ محصول» هر پروژه).`;
+      if (d.failures.length || A.length) {
+        const p = d.failures.slice(0, 3).join("؛ "), w = d.failures.length > 3 ? ` و ${g(d.failures.length - 3)} مورد دیگر` : "";
         return {
           outcome: "PARTIAL",
-          message: `همگام‌سازی ناقص ماند: ${m(Math.max(k.length, c.failures.length))} مورد از فایل به پاکا نیامد.` + (p ? ` ${p}${h}.` : "") + (d.length ? ` انجام‌شده: ${d.join("، ")}.` : "") + ` ${u}`,
+          message: `همگام‌سازی ناقص ماند: ${g(Math.max(A.length, d.failures.length))} مورد از فایل به پاکا نیامد.` + (p ? ` ${p}${w}.` : "") + (c.length ? ` انجام‌شده: ${c.join("، ")}.` : "") + ` ${u}`,
           at: t(),
-          created: c.createdProjects + c.createdTasks + c.createdTimeLogs,
-          updated: c.updatedProjects + c.updatedTasks + c.updatedTimeLogs,
-          failures: c.failures
+          created: d.createdProjects + d.createdTasks + d.createdTimeLogs,
+          updated: d.updatedProjects + d.updatedTasks + d.updatedTimeLogs,
+          failures: d.failures
         };
       }
-      return T > 0 ? {
+      return $ > 0 ? {
         outcome: "MERGED",
-        message: `همگام‌سازی انجام شد؛ ${d.join("، ")}. ${u}`,
+        message: `همگام‌سازی انجام شد؛ ${c.join("، ")}. ${u}`,
         at: t(),
-        created: c.createdProjects + c.createdTasks + c.createdTimeLogs,
-        updated: c.updatedProjects + c.updatedTasks + c.updatedTimeLogs
-      } : n ? g !== S ? {
+        created: d.createdProjects + d.createdTasks + d.createdTimeLogs,
+        updated: d.updatedProjects + d.updatedTasks + d.updatedTimeLogs
+      } : n ? y !== h ? {
         outcome: "PUSHED",
         message: "تغییرات پاکا ذخیره شد.",
         at: t()
@@ -1039,24 +1058,24 @@ function ie(e = {}) {
         at: t()
       };
     }
-  })(), D.finally(() => {
-    D = null;
+  })(), B.finally(() => {
+    B = null;
   }));
 }
 let ct = 0;
-async function H(e = !1) {
-  if (!(!U() || !Et() || !Z()) && !location.pathname.includes("/plugin-pages/com.karnameh.drive-sync") && !(!e && Date.now() - ct < 2e4)) {
+async function F(e = !1) {
+  if (!(!H() || !Et() || !X()) && !location.pathname.includes("/plugin-pages/com.karnameh.drive-sync") && !(!e && Date.now() - ct < 2e4)) {
     ct = Date.now();
     try {
-      const t = await ie();
+      const t = await de();
       vt(t), (t.outcome === "MERGED" || t.outcome === "PARTIAL") && (Ct(), window.dispatchEvent(new CustomEvent("paca-sync-merged", { detail: t })));
     } catch {
     }
   }
 }
-setTimeout(() => void H(!0), 6e3);
-setInterval(() => void H(), 6e4);
+setTimeout(() => void F(!0), 6e3);
+setInterval(() => void F(), 6e4);
 document.addEventListener("visibilitychange", () => {
-  document.visibilityState === "visible" && H();
+  document.visibilityState === "visible" && F();
 });
-window.addEventListener("online", () => void H(!0));
+window.addEventListener("online", () => void F(!0));
