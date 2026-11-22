@@ -1,0 +1,21 @@
+name: windows-release
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build zip + 7z from the published download
+        run: |
+          curl -sSfL -o Paca-windows.7z https://hosseinrch.github.io/downloads/Paca-windows.7z
+          7z x -y Paca-windows.7z >/dev/null
+          test -f Paca/Paca.exe
+          zip -qr -9 Paca-windows.zip Paca
+          ls -l Paca-windows.7z Paca-windows.zip
+      - name: Upload to release windows-latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload windows-latest Paca-windows.zip Paca-windows.7z --clobber -R "$GITHUB_REPOSITORY"
