@@ -3,7 +3,7 @@ const currentImports = {};
       let moduleMap = {
 "./TimeLogsSection":()=>{
       dynamicLoadingCss([], false, './TimeLogsSection');
-      return __federation_import('./__federation_expose_TimeLogsSection-fa-0138e00d46a3e3cd.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},
+      return __federation_import('./__federation_expose_TimeLogsSection-fa-2c20917cb123716b.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},
 "./ProjectTimeTrackingPage":()=>{
       dynamicLoadingCss([], false, './ProjectTimeTrackingPage');
       return __federation_import('./__federation_expose_ProjectTimeTrackingPage-3leoo_mG.js').then(module =>Object.keys(module).every(item => exportSet.has(item)) ? () => module.default : () => module)},
